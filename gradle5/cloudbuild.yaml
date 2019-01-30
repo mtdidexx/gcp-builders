@@ -1,0 +1,32 @@
+# In this directory, run the following command to build this builder.
+# $ gcloud builds submit . --config=cloudbuild.yaml
+#
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--build-arg=BASE_IMAGE=gcr.io/$PROJECT_ID/javac:11'
+  - '--build-arg=GRADLE_VERSION=5.1.1'
+  - '--build-arg=SHA=4953323605c5d7b89e97d0dc7779e275bccedefcdac090aec123375eae0cc798'
+  - '--tag=gcr.io/$PROJECT_ID/gradle:5.1.1-jdk-11'
+  - '--tag=gcr.io/$PROJECT_ID/java/gradle:5.1.1-jdk-11'
+  - '.'
+  waitFor: ['-']
+
+# Tag the default 'latest' version
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'tag'
+  - 'gcr.io/$PROJECT_ID/gradle:5.1.1-jdk-11'
+  - 'gcr.io/$PROJECT_ID/java/gradle'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'tag'
+  - 'gcr.io/$PROJECT_ID/gradle:5.1.1-jdk-11'
+  - 'gcr.io/$PROJECT_ID/gradle'
+
+images:
+- 'gcr.io/$PROJECT_ID/gradle'
+- 'gcr.io/$PROJECT_ID/gradle:5.1.1-jdk-11'
+- 'gcr.io/$PROJECT_ID/java/gradle'
