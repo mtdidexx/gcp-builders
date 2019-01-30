@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=gcr.io/gdos-mdonahue-sb/java/javac:11
+ARG BASE_IMAGE=openjdk:11
 FROM ${BASE_IMAGE}
 
 ARG GRADLE_VERSION=5.1.1
